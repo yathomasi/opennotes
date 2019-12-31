@@ -18,6 +18,14 @@ module.exports = sequelize => {
       content: {
         type: Sequelize.TEXT,
         allowNull: false
+      },
+      UserId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Users",
+          key: "userId"
+        }
       }
     },
     {}
