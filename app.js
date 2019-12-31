@@ -37,6 +37,7 @@ server.use(passport.initialize());
 //Routes
 require("./db/models");
 require("./routes")(server);
+require("./routes/note")(server);
 
 server.listen(config.PORT, err => {
   if (err) throw err;
