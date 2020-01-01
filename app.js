@@ -39,6 +39,11 @@ require("./db/models");
 require("./routes")(server);
 require("./routes/note")(server);
 
+// Default error handler
+server.use(function(err, req, res, next) {
+  res.status(400).json(err);
+});
+
 server.listen(config.PORT, err => {
   if (err) throw err;
   console.log(`${server.name} server running on port ${config.PORT}`);
