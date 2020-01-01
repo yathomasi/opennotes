@@ -1,5 +1,5 @@
 const restify = require("restify");
-const corsMiddleware = require("restify-cors-middleware");
+const corsMiddleware = require("restify-cors-middleware2");
 const logger = require("morgan");
 const compression = require("compression");
 const helmet = require("helmet");
@@ -12,7 +12,7 @@ const server = restify.createServer({
 });
 //cors
 const cors = corsMiddleware({
-  origins: ["*"],
+  origins: ["*"], //TODO change to domain
   allowHeaders: ["Authorization"],
   exposeHeaders: ["Authorization"]
 });

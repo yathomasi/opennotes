@@ -1,8 +1,8 @@
-const db = require("../db/models");
-const Note = require("../db/models/note")(db.sequelize);
+const models = require("../db/models");
 const errors = require("restify-errors");
+
 exports.listNotes = (req, res, next) => {
-  Note.findAll()
+  models.Note.findAll()
     .then(notes => {
       res.json(notes);
     })
@@ -11,9 +11,10 @@ exports.listNotes = (req, res, next) => {
     });
   next();
 };
+
 exports.getNote = (req, res, next) => {
   const noteId = req.params.id;
-  Note.findOne({ where: { noteId: noteId } })
+  models.Note.findOne({ where: { noteId: noteId } })
     .then(user => {
       if (user === null) {
         return next(
@@ -29,14 +30,17 @@ exports.getNote = (req, res, next) => {
     });
   next();
 };
+
 exports.postNote = (req, res, next) => {
   res.json({ msg: "Handle post note here" });
   next();
 };
+
 exports.updateNote = (req, res, next) => {
   res.json({ msg: "Update the given note" });
   next();
 };
+
 exports.deleteNote = (req, res, next) => {
   res.json({ msg: "delete the given note" });
   next();
