@@ -32,16 +32,70 @@ exports.getNote = (req, res, next) => {
 };
 
 exports.postNote = (req, res, next) => {
-  res.json({ msg: "Handle post note here" });
+  let { title, content, UserId } = req.body;
+  models.Note.create({
+    title,
+    content,
+    UserId
+  })
+    .then(note => {
+      let data = {
+        msg: "New Note succesfully created.",
+        data: note
+      };
+      res.json(data);
+      next();
+    })
+    .catch(err => {
+      return next(new errors.InvalidContentError(err));
+    });
   next();
 };
 
 exports.updateNote = (req, res, next) => {
-  res.json({ msg: "Update the given note" });
+  const noteId = req.params.id;
+  let { title, content } = req.body;
+  models.Note.findOne({ where: { noteId: noteId } })
+    .then(note => {
+      if (note) {
+        note.update({
+          title,
+          content
+        });
+        let data = {
+          msg: "Note updated succesfully.",
+          data: note
+        };
+        res.json(data);
+        next();
+      } else {
+        return next(
+          new errors.ResourceNotFoundError(
+            `There is no notes with the id of ${noteId}`
+          )
+        );
+      }
+    })
+    .catch(err => {
+      return next(new errors.InvalidContentError(err));
+    });
   next();
 };
 
 exports.deleteNote = (req, res, next) => {
-  res.json({ msg: "delete the given note" });
-  next();
+  const noteId = req.params.id;
+  models.Note.destroy({ where: { noteId: noteId } })
+    .then(result => {
+      if (!result) {
+        return next(
+          new errors.ResourceNotFoundError(
+            `There is no notes with the id of ${req.params.id}`
+          )
+        );
+      }
+      res.json({ msg: "Note is succesfully deleted." });
+    })
+    .catch(err => {
+      return next(new errors.InvalidContentError(err));
+    });
 };
