@@ -55,18 +55,16 @@ exports.postNote = (req, res, next) => {
 exports.updateNote = (req, res, next) => {
   const noteId = req.params.id;
   let { title, content } = req.body;
-  models.Note.findOne({ where: { noteId: noteId } })
+  models.Note.update(
+    {
+      title,
+      content
+    },
+    { where: { noteId: noteId } }
+  )
     .then(note => {
-      if (note) {
-        note.update({
-          title,
-          content
-        });
-        let data = {
-          msg: "Note updated succesfully.",
-          data: note
-        };
-        res.json(data);
+      if (note[0]) {
+        res.json({ msg: "Note updated succesfully." });
         next();
       } else {
         return next(
