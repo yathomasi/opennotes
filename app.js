@@ -37,7 +37,6 @@ server.use(passport.initialize());
 //Routes
 require("./db/models");
 require("./routes")(server);
-require("./routes/note")(server);
 
 // Default error handler
 server.use(function(err, req, res, next) {
