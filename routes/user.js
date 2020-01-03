@@ -1,5 +1,9 @@
 const userController = require("../controllers/user");
-const { registerValidation, validate } = require("../middleware/validator");
+const {
+  loginValidation,
+  registerValidation,
+  validate
+} = require("../middleware/validator");
 
 module.exports = server => {
   server.get("/api/v1/users", userController.listUsers);
@@ -10,5 +14,10 @@ module.exports = server => {
     validate,
     userController.registerUser
   );
-  server.post("/api/v1/login", userController.loginUser);
+  server.post(
+    "/api/v1/login",
+    loginValidation(),
+    validate,
+    userController.loginUser
+  );
 };

@@ -2,6 +2,25 @@ const models = require("../db/models");
 const { body, validationResult } = require("express-validator");
 const passRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
 
+const loginValidation = () => {
+  return [
+    body("username")
+      .not()
+      .isEmpty()
+      .withMessage("Please provide your username.")
+      .isAlphanumeric()
+      .withMessage("Username is alphanumeric")
+      .isLength({ max: 50 })
+      .withMessage("Username is of maximum length 50.")
+      .trim(),
+    body("password")
+      .not()
+      .isEmpty()
+      .withMessage("Password should not be empty")
+      .isLength({ min: 8 })
+      .withMessage("Password should be minimum eight characters")
+  ];
+};
 const registerValidation = () => {
   return [
     body("name")
@@ -90,6 +109,7 @@ const validate = (req, res, next) => {
 
 module.exports = {
   registerValidation,
+  loginValidation,
   postNoteValidation,
   validate
 };
