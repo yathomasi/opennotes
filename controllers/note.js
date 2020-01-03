@@ -14,7 +14,7 @@ exports.listNotes = (req, res, next) => {
 
 exports.getNote = (req, res, next) => {
   const noteId = req.params.id;
-  models.Note.findOne({ where: { noteId: noteId } })
+  models.Note.findOne({ where: { noteId } })
     .then(user => {
       if (user === null) {
         return next(
