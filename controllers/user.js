@@ -4,7 +4,9 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/config");
 
 exports.listUsers = (req, res, next) => {
-  models.User.findAll()
+  models.User.findAll({
+    attributes: { exclude: ["password", "createdAt", "updatedAt"] }
+  })
     .then(users => {
       res.json(users);
     })
@@ -16,9 +18,12 @@ exports.listUsers = (req, res, next) => {
 
 exports.getUser = (req, res, next) => {
   const userId = req.params.id;
-  models.User.findOne({ where: { userId } })
+  models.User.findOne({
+    where: { userId },
+    attributes: { exclude: ["password", "createdAt", "updatedAt"] }
+  })
     .then(user => {
-      if (user === null) {
+      if (!user) {
         return next(
           new errors.ResourceNotFoundError(
             `There is no users with the id of ${userId}`
