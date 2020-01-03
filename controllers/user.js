@@ -1,5 +1,7 @@
 const models = require("../db/models");
 const errors = require("restify-errors");
+const jwt = require("jsonwebtoken");
+const config = require("../config/config");
 
 exports.listUsers = (req, res, next) => {
   models.User.findAll()
@@ -75,18 +77,25 @@ exports.loginUser = (req, res, next) => {
       if (user) {
         const valid = user.validPassword(password);
         if (valid) {
-          res.json({ msg: "You are successfully logged in" });
+          const payload = { id: user.userId };
+          const jwtOptions = {
+            issuer: config.JWT_ISSUER,
+            expiresIn: config.JWT_EXP
+          };
+          const token = jwt.sign(payload, config.JWT_SECRET, jwtOptions);
+          res.json({ token: token });
+          // res.json({ msg: "You are successfully logged in" });
           next();
         } else {
           return next(
-            new errors.UnauthorizedError(
+            new errors.InvalidCredentialsError(
               "Please check your credentials and try again."
             )
           );
         }
       } else {
         return next(
-          new errors.UnauthorizedError(
+          new errors.InvalidCredentialsError(
             "Such username doesn't exist. You can register to create one"
           )
         );
