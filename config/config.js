@@ -11,5 +11,11 @@ module.exports = {
   DB_HOSTNAME: process.env.DB_HOSTNAME,
   DB_PORT: process.env.DB_PORT || "3306",
   DB_DIALECT: process.env.DB_DIALECT || "mariadb",
-  DB_TIMEZONE: process.env.DB_TIMEZONE || "Asia/Kathmandu"
+  DB_TIMEZONE: process.env.DB_TIMEZONE || "Asia/Kathmandu",
+  //JWT
+  JWT_SECRET:
+    process.env.JWT_SECRET ||
+    "thisisasecretthatencryptsthejsonsokeepsecureprovidethesecretvalue",
+  JWT_ISSUER: process.env.JWT_ISSUER || "https://fbk.com.np",
+  JWT_EXP: process.env.JWT_EXP || "1d"
 };
