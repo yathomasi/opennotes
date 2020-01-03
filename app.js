@@ -40,7 +40,7 @@ require("./routes")(server);
 
 // Default error handler
 server.use(function(err, req, res, next) {
-  res.status(400).json(err);
+  res.send(400, err);
 });
 
 server.listen(config.PORT, err => {
