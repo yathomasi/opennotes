@@ -96,6 +96,15 @@ const postNoteValidation = () => {
       .trim()
   ];
 };
+const updateNoteValidation = () => {
+  return [
+    body("title")
+      .isLength({ max: 255 })
+      .withMessage("Title has maximum length 255")
+      .trim(),
+    body("content").trim()
+  ];
+};
 const validate = (req, res, next) => {
   let error = validationResult(req);
   if (error.isEmpty()) {
@@ -111,5 +120,6 @@ module.exports = {
   registerValidation,
   loginValidation,
   postNoteValidation,
+  updateNoteValidation,
   validate
 };
