@@ -10,4 +10,5 @@ module.exports = server => {
     validate,
     userController.registerUser
   );
+  server.post("/api/v1/login", userController.loginUser);
 };
