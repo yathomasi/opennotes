@@ -16,18 +16,21 @@ jwtOptions.issuer = config.JWT_ISSUER;
 jwtOptions.expiresIn = config.JWT_EXP;
 
 let strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
-  console.log("payload received", jwt_payload);
-  let user;
-  try {
-    user = models.User.findOne({ where: { userId: jwt_payload.id } });
-  } catch (err) {
-    if (err) return next(new errors.UnprocessableEntityError(err));
-  }
-  if (user) {
-    next(null, user);
-  } else {
-    next(null, false);
-  }
+  // console.log("payload received", jwt_payload);
+  models.User.findOne({
+    where: { userId: jwt_payload.id },
+    attributes: { exclude: ["password", "createdAt", "updatedAt"] }
+  })
+    .then(user => {
+      if (user) {
+        next(null, user);
+      } else {
+        next(null, false);
+      }
+    })
+    .catch(err => {
+      if (err) return next(new errors.UnprocessableEntityError(err));
+    });
 });
 
 passport.use(strategy);
