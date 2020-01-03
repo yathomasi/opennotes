@@ -37,11 +37,6 @@ module.exports = sequelize => {
           const salt = bcrypt.genSaltSync();
           user.password = bcrypt.hashSync(user.password, salt);
         }
-      },
-      instanceMethods: {
-        validPassword: function(password) {
-          return bcrypt.compareSync(password, this.password);
-        }
       }
     }
     //   isAdmin: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false }
@@ -53,6 +48,9 @@ module.exports = sequelize => {
       as: "notes",
       onDelete: "CASCADE"
     });
+  };
+  User.prototype.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
   };
   return User;
 };
