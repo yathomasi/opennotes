@@ -32,7 +32,8 @@ exports.getNote = (req, res, next) => {
 };
 
 exports.postNote = (req, res, next) => {
-  let { title, content, UserId } = req.body;
+  let { title, content } = req.body;
+  const UserId = req.user.userId;
   models.Note.create({
     title,
     content,
@@ -60,17 +61,16 @@ exports.updateNote = (req, res, next) => {
       title,
       content
     },
-    { where: { noteId: noteId } }
+    { where: { noteId, UserId: req.user.userId } }
   )
     .then(note => {
+      console.log(note);
       if (note[0]) {
         res.json({ msg: "Note updated succesfully." });
         next();
       } else {
         return next(
-          new errors.ResourceNotFoundError(
-            `There is no notes with the id of ${noteId}`
-          )
+          new errors.UnauthorizedError(`Unable to update note ${noteId}`)
         );
       }
     })
@@ -82,13 +82,11 @@ exports.updateNote = (req, res, next) => {
 
 exports.deleteNote = (req, res, next) => {
   const noteId = req.params.id;
-  models.Note.destroy({ where: { noteId: noteId } })
+  models.Note.destroy({ where: { noteId, UserId: req.user.userId } })
     .then(result => {
       if (!result) {
         return next(
-          new errors.ResourceNotFoundError(
-            `There is no notes with the id of ${req.params.id}`
-          )
+          new errors.UnauthorizedError(`Unable to delete note ${noteId}`)
         );
       }
       res.json({ msg: "Note is succesfully deleted." });
