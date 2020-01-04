@@ -17,5 +17,8 @@ module.exports = {
     process.env.JWT_SECRET ||
     "thisisasecretthatencryptsthejsonsokeepsecureprovidethesecretvalue",
   JWT_ISSUER: process.env.JWT_ISSUER || "https://fbk.com.np",
-  JWT_EXP: process.env.JWT_EXP || "1d"
+  JWT_EXP: process.env.JWT_EXP || "1d",
+  FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID,
+  FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET,
+  FACEBOOK_CALLBACK_URL: process.env.FACEBOOK_CALLBACK_URL
 };

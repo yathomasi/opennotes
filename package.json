@@ -26,6 +26,7 @@
     "jsonwebtoken": "^8.5.1",
     "mariadb": "^2.1.4",
     "passport": "^0.4.1",
+    "passport-facebook": "^3.0.0",
     "passport-jwt": "^4.0.0",
     "restify": "^8.5.1",
     "restify-cors-middleware2": "^2.0.0",
