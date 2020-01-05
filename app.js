@@ -35,6 +35,7 @@ server.use(cors.actual);
 server.use(passport.initialize());
 
 //Routes
+require("./config/redisClient");
 require("./db/models");
 require("./routes")(server);
 
