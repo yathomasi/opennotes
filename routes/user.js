@@ -21,4 +21,5 @@ module.exports = server => {
     validate,
     userController.loginUser
   );
+  server.get("/api/v1/logout", auth.validJWT, userController.logout);
 };
