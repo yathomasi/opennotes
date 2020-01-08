@@ -62,7 +62,12 @@ exports.validJWT = (req, res, next) => {
       });
       return next();
     } else {
-      const jwt_payload = jwt.verify(token, config.JWT_SECRET, jwtOptions);
+      let jwt_payload;
+      try {
+        jwt_payload = jwt.verify(token, config.JWT_SECRET, jwtOptions);
+      } catch (err) {
+        return next(new errors.UnprocessableEntityError(err));
+      }
       // console.log("jwt_payload", jwt_payload);
       models.User.findOne({
         where: { userId: jwt_payload.id },
