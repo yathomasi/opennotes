@@ -5,6 +5,9 @@ const config = require("../config/config");
 const redisClient = require("../config/redisClient");
 
 exports.listUsers = (req, res, next) => {
+  // const id = req.user.userId;
+  // console.log("Issued by user", id);
+  console.log("User in controller", req.user);
   models.User.findAll({
     attributes: { exclude: ["password", "createdAt", "updatedAt"] }
   })
