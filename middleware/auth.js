@@ -40,27 +40,33 @@ passport.use(strategy);
 exports.authJWT = passport.authenticate("jwt", { session: false });
 
 exports.validJWT = (req, res, next) => {
-  let token =
-    req.headers["x-access-token"] ||
-    req.headers.authorization.split("Bearer ")[1];
+  if (!req.headers.authorization) {
+    return next(
+      new errors.UnauthorizedError(
+        "Access denied. No token provided. Please login."
+      )
+    );
+  }
+  let token = req.headers.authorization.split("Bearer ")[1];
   if (!token) {
-    return res.send(401, {
-      auth: false,
-      message: "Access denied. No token provided. Please login."
-    });
+    return next(
+      new errors.UnauthorizedError(
+        "Access denied. No token provided. Please login."
+      )
+    );
   }
   let jwtOptions = {};
   jwtOptions.issuer = config.JWT_ISSUER;
   jwtOptions.expiresIn = config.JWT_EXP;
 
   redisClient.lrange("token", 0, -1, (err, result) => {
-    if (err) res.send(400, err);
+    if (err) return next(new errors.UnauthorizedError(err));
     if (result.indexOf(token) > -1) {
-      res.send(400, {
-        status: 400,
-        error: "Your Token is expired. Please login again."
-      });
-      return next();
+      return next(
+        new errors.UnauthorizedError(
+          "Your Token is expired. Please login again."
+        )
+      );
     } else {
       let jwt_payload;
       try {
@@ -79,7 +85,6 @@ exports.validJWT = (req, res, next) => {
             // console.log(req.user)
             return next();
           } else {
-            // next(null, false);
             return next(
               new errors.ResourceNotFoundError(
                 "User not found. Please login again."
@@ -90,7 +95,9 @@ exports.validJWT = (req, res, next) => {
         .catch(err => {
           if (err) return next(new errors.UnprocessableEntityError(err));
         });
-      return next();
+      //this causes to run next module even though process is not complete here
+      // return next();
+      //Kept here just for information
     }
   });
 };
