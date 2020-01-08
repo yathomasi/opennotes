@@ -7,7 +7,7 @@ const {
 const auth = require("../middleware/auth");
 
 module.exports = server => {
-  server.get("/api/v1/users", auth.authJWT, userController.listUsers);
+  server.get("/api/v1/users", auth.validJWT, userController.listUsers);
   server.get("/api/v1/users/:id", userController.getUser);
   server.post(
     "/api/v1/register",
