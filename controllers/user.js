@@ -112,12 +112,15 @@ exports.loginUser = (req, res, next) => {
     });
 };
 
-exports.logout = (req, res) => {
+exports.logout = (req, res, next) => {
   // logout user
   // save token in redis
   const token = req.headers.authorization.split(" ")[1];
+
   redisClient.lpush("token", token, (err, reply) => {
-    if (err) res.send(400, err);
+    if (err) {
+      return next(new errors.UnauthorizedError(err));
+    }
     console.log(reply);
     res.send({
       msg: "You are logged out"
