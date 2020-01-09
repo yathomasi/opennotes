@@ -18,13 +18,13 @@ const cors = corsMiddleware({
 });
 
 if (config.NODE_ENV == "development") {
-  server.use(logger("dev"));
   console.log("Logger on development mode");
 } else if (config.NODE_ENV == "production") {
   console.log("Production mode");
-  server.use(compression());
-  server.use(helmet());
 }
+server.use(logger("dev"));
+server.use(compression());
+server.use(helmet());
 //default
 server.use(restify.plugins.acceptParser(server.acceptable));
 server.use(restify.plugins.queryParser());
