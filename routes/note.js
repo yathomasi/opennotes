@@ -13,15 +13,15 @@ module.exports = server => {
     "/api/v1/notes",
     postNoteValidation(),
     validate,
-    auth.authJWT,
+    auth.validJWT,
     noteController.postNote
   );
   server.put(
     "/api/v1/notes/:id",
     updateNoteValidation(),
     validate,
-    auth.authJWT,
+    auth.validJWT,
     noteController.updateNote
   );
-  server.del("/api/v1/notes/:id", auth.authJWT, noteController.deleteNote);
+  server.del("/api/v1/notes/:id", auth.validJWT, noteController.deleteNote);
 };

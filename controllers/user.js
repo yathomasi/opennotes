@@ -2,6 +2,7 @@ const models = require("../db/models");
 const errors = require("restify-errors");
 const jwt = require("jsonwebtoken");
 const config = require("../config/config");
+const redisClient = require("../config/redisClient");
 
 exports.listUsers = (req, res, next) => {
   models.User.findAll({
@@ -109,4 +110,20 @@ exports.loginUser = (req, res, next) => {
     .catch(err => {
       return next(new errors.UnauthorizedError(err));
     });
+};
+
+exports.logout = (req, res, next) => {
+  // logout user
+  // save token in redis
+  const token = req.headers.authorization.split(" ")[1];
+
+  redisClient.lpush("token", token, (err, reply) => {
+    if (err) {
+      return next(new errors.UnauthorizedError(err));
+    }
+    console.log(reply);
+    res.send({
+      msg: "You are logged out"
+    });
+  });
 };
