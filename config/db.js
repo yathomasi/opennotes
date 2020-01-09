@@ -10,7 +10,8 @@ module.exports = {
     dialect: config.DB_DIALECT || "mariadb",
     dialectOptions: {
       timezone: config.DB_TIMEZONE
-    }
+    },
+    url: config.DATABASE_URL
   },
   test: {
     username: config.DB_USERNAME,
@@ -21,7 +22,8 @@ module.exports = {
     dialect: config.DB_DIALECT || "mariadb",
     dialectOptions: {
       timezone: config.DB_TIMEZONE
-    }
+    },
+    url: config.DATABASE_URL
   },
   production: {
     username: config.DB_USERNAME,
@@ -32,6 +34,7 @@ module.exports = {
     dialect: config.DB_DIALECT,
     dialectOptions: {
       timezone: config.DB_TIMEZONE
-    }
+    },
+    url: config.DATABASE_URL
   }
 };
