@@ -12,7 +12,12 @@ const server = restify.createServer({
 });
 //cors
 const cors = corsMiddleware({
-  origins: ["*"], //TODO change to domain
+  origins: [
+    "http://opennotes.ml",
+    "http://*.opennotes.ml",
+    /^http?:\/\/opennotes.ml(:[\d]+)?$/,
+    /^https?:\/\/opennotes.ml(:[\d]+)?$/
+  ],
   allowHeaders: ["Authorization"],
   exposeHeaders: ["Authorization"]
 });
