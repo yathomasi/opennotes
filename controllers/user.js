@@ -45,7 +45,7 @@ exports.registerUser = (req, res, next) => {
     return next(new errors.InvalidContentError("Expects 'application/json'"));
   }
   let { name, username, email, password } = req.body;
-  if (password !== req.body.passwordConfirmation) {
+  if (password !== req.body.confirmPassword) {
     return next(new errors.InvalidContentError("Passwords do not match"));
   }
   models.User.create({

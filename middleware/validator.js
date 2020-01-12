@@ -40,7 +40,7 @@ const registerValidation = () => {
       .custom(value => {
         return models.User.findOne({ where: { email: value } }).then(user => {
           if (user) {
-            return Promise.reject("E-mail already in use");
+            return Promise.reject(" E-mail already in use ");
           }
         });
       }),
@@ -56,7 +56,7 @@ const registerValidation = () => {
         return models.User.findOne({ where: { username: value } }).then(
           user => {
             if (user) {
-              return Promise.reject("Username already in use");
+              return Promise.reject(" Username already in use ");
             }
           }
         );
@@ -73,7 +73,7 @@ const registerValidation = () => {
         "Password should be at least one number and one special character."
       )
       .custom((value, { req }) => {
-        if (value == req.body.passwordConfirmation) {
+        if (value == req.body.confirmPassword) {
           return true;
         }
       })
