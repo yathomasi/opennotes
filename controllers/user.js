@@ -38,6 +38,15 @@ exports.getUser = (req, res, next) => {
     });
   next();
 };
+exports.getMe = (req, res, next) => {
+  try {
+    let user = req.user;
+    res.json(user);
+    next();
+  } catch (err) {
+    return next(new errors.UnauthorizedError(err));
+  }
+};
 
 exports.registerUser = (req, res, next) => {
   // Check for JSON
@@ -89,7 +98,7 @@ exports.loginUser = (req, res, next) => {
             expiresIn: config.JWT_EXP
           };
           const token = jwt.sign(payload, config.JWT_SECRET, jwtOptions);
-          res.json({ token: token });
+          res.json({ userId: user.userId, token: token });
           // res.json({ msg: "You are successfully logged in" });
           next();
         } else {

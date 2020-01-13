@@ -7,8 +7,8 @@ const {
 const auth = require("../middleware/auth");
 
 module.exports = server => {
-  server.get("/api/v1/notes", noteController.listNotes);
-  server.get("/api/v1/notes/:id", noteController.getNote);
+  server.get("/api/v1/notes", auth.validJWT, noteController.listNotes);
+  server.get("/api/v1/notes/:id", auth.validJWT, noteController.getNote);
   server.post(
     "/api/v1/notes",
     postNoteValidation(),
